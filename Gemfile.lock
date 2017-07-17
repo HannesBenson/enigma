@@ -1,0 +1,20 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    maxitest (2.4.0)
+      minitest (>= 5.0.0, < 5.11.0)
+    metaclass (0.0.4)
+    minitest (5.10.2)
+    mocha (1.2.1)
+      metaclass (~> 0.0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  maxitest
+  minitest
+  mocha
+
+BUNDLED WITH
+   1.15.1
