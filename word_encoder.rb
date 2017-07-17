@@ -22,15 +22,21 @@ class WordEncoder
 
   def encode_string
     return display_error_message if error
-    encoded_string = string.split(/\s+/).map do |word|
-      convert_word_to_morse_and_encode(word)
-    end.join('/')
+    encoded_string = string.split(/\n/).map do |line|
+      encode_line(line.strip)
+    end.join("\n")
     puts encoded_string
   end
 
 private
 
   attr_reader :string, :error
+
+  def encode_line(line)
+    line.split(/\s+/).map do |word|
+      convert_word_to_morse_and_encode(word)
+    end.join('/')
+  end
 
   def convert_word_to_morse_and_encode(word)
     word.scan(/\w/).map do |char|

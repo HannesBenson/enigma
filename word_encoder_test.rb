@@ -17,7 +17,7 @@ describe 'WordEncoder' do
     context 'when the file does exist' do
       it 'encode the contents of the file' do
         actual_path = File.join(File.dirname(__FILE__), 'test_data.txt')
-        expected_string = "2/1A|B/2|A1/A|1A1|C|2A|A3|1A2|1\n"
+        expected_string = "4|1|1A2|1A2|C\n2/1A|B/2|A1/A|1A1|C|2A|A3|1A2|1\n"
         proc { WordEncoder.encode_string_or_file(actual_path) }.must_output expected_string
       end
     end
