@@ -5,3 +5,5 @@ To encode a message, simple go to your command line and run `./encode` with a pa
 
 ### Some assumptions
 * You have ruby installed
+* You use rvm
+* You use unix
