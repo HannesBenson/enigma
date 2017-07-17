@@ -13,9 +13,14 @@ class WordEncoder
   end
 
   def initialize(string_or_path)
-    @string = string_or_path
-    @string = File.read(string_or_path).strip if looks_like_path?(string_or_path)
+    if looks_like_path?(string_or_path)
+      @string = File.read(string_or_path).strip
+    else
+      puts "Please enter the message you would like to have encoded:\n\n"
+      @string = STDIN.gets.chomp
+    end
     @error = 'You cannot encode an empty message!' if string_empty?
+    @error ||= 'The message can only contain alphanumeric characters!' if !string_valid?
   rescue Errno::ENOENT
     @error = "The file '#{string_or_path}' does not exist!"
   end
@@ -25,7 +30,8 @@ class WordEncoder
     encoded_string = string.split(/\n/).map do |line|
       encode_line(line.strip)
     end.join("\n")
-    puts encoded_string
+    write_encoded_message_to_file(encoded_string)
+    puts 'Message wrote to encoded_message.txt'
   end
 
 private
@@ -40,7 +46,7 @@ private
 
   def convert_word_to_morse_and_encode(word)
     word.scan(/\w/).map do |char|
-      morse_char = MORSE_MAP[char]
+      morse_char = MORSE_MAP[char.upcase]
       encode_letter(morse_char)
     end.join('|')
   end
@@ -73,7 +79,18 @@ private
     string.nil? || string == ''
   end
 
+  def string_valid?
+    string.gsub(/\s+/, '').upcase.split(//) - MORSE_MAP.keys == []
+  end
+
   def display_error_message
     puts error
+  end
+
+  def write_encoded_message_to_file(encoded_string)
+    path = File.join(File.dirname(__FILE__), 'encoded_message.txt')
+    File.open(path, 'w') do |f|
+      f.puts encoded_string
+    end
   end
 end
