@@ -1,0 +1,2 @@
+inherit_gem:
+  shop_storm_cops: lib/shop_storm_cops/rubocop/shared_cops.yml
