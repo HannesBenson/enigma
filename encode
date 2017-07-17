@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require_relative 'word_encoder'
+WordEncoder.encode_string_or_file(ARGV.join(' '))
