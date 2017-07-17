@@ -68,6 +68,6 @@ private
   end
 
   def display_error_message
-    puts error.inspect
+    puts error
   end
 end
