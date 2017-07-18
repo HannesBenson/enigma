@@ -9,7 +9,7 @@ class WordEncoder
                 '7' => '--...', '8' => '---..', '9' => '----.', '.' => '.-.-.-', ',' => '--..--' }.freeze
 
   def self.encode_string_or_file(string_or_path)
-    new(string_or_path).encode_string
+    new(string_or_path).process_string
   end
 
   def initialize(string_or_path)
@@ -17,19 +17,27 @@ class WordEncoder
     @string ||= read_string_from_stdin
   end
 
-  def encode_string
+  def process_string
     validate_string
     return display_error_message if error
-    encoded_string = string.split(/\n/).map do |line|
-      encode_line(line.strip)
-    end.join("\n")
+    encode_string
     write_encoded_message_to_file(encoded_string)
-    puts 'Message wrote to encoded_message.txt'
+    display_success_message
   end
 
 private
 
-  attr_reader :string, :error
+  attr_reader :string, :error, :encoded_string
+
+  def encode_string
+    @encoded_string = string.split(/\n/).map do |line|
+      encode_line(line.strip)
+    end.join("\n")
+  end
+
+  def display_success_message
+    puts 'Message wrote to encoded_message.txt'
+  end
 
   def read_string_from_stdin
     puts "Please enter the message you would like to have encoded:\n\n"
