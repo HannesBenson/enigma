@@ -13,19 +13,12 @@ class WordEncoder
   end
 
   def initialize(string_or_path)
-    if looks_like_path?(string_or_path)
-      @string = File.read(string_or_path).strip
-    else
-      puts "Please enter the message you would like to have encoded:\n\n"
-      @string = STDIN.gets.chomp
-    end
-    @error = 'You cannot encode an empty message!' if string_empty?
-    @error ||= 'The message can only contain alphanumeric characters!' if !string_valid?
-  rescue Errno::ENOENT
-    @error = "The file '#{string_or_path}' does not exist!"
+    @string = read_string_from_file(string_or_path) if looks_like_path?(string_or_path)
+    @string ||= read_string_from_stdin
   end
 
   def encode_string
+    validate_string
     return display_error_message if error
     encoded_string = string.split(/\n/).map do |line|
       encode_line(line.strip)
@@ -37,6 +30,22 @@ class WordEncoder
 private
 
   attr_reader :string, :error
+
+  def read_string_from_stdin
+    puts "Please enter the message you would like to have encoded:\n\n"
+    STDIN.gets.chomp
+  end
+
+  def read_string_from_file(string_or_path)
+    File.read(string_or_path).strip
+  rescue Errno::ENOENT
+    @error = "The file '#{string_or_path}' does not exist!"
+  end
+
+  def validate_string
+    @error ||= 'You cannot encode an empty message!' if string_empty?
+    @error ||= 'The message can only contain alphanumeric characters!' if !string_valid?
+  end
 
   def encode_line(line)
     line.split(/\s+/).map do |word|
